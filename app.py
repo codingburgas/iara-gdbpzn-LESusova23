@@ -1,8 +1,8 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required
-from werkzeug.security import check_password_hash, generate_password_hash  # ДОБАВЛЕН generate_password_hash
+from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
-from models import db, User, Ship, Permit, CatchLog, Inspection
+from models import db, User, Ship, Permit, CatchLog, Inspection, Ticket
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
@@ -21,7 +21,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# --- НОВИЙ МАРШРУТ ЗА РЕГИСТРАЦИЯ ---
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -44,7 +43,7 @@ def register():
     return render_template('register.html')
 
 
-# -------------------------------------
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -69,6 +68,29 @@ def index():
     ships = Ship.query.all()
     return render_template('index.html', ships=ships)
 
+@app.route('/ship/add', methods=['GET', 'POST'])
+@login_required
+def add_ship():
+    if request.method == 'POST':
+        new_ship = Ship(
+            name=request.form['name'],
+            int_number=request.form['int_number'],
+            call_sign=request.form.get('call_sign', ''),
+            marking=request.form.get('marking', ''),
+            owner_name=request.form['owner_name'],
+            captain_name=request.form['captain_name'],
+            length=float(request.form.get('length', 0) or 0),
+            width=float(request.form.get('width', 0) or 0),
+            tonnage=float(request.form.get('tonnage', 0) or 0),
+            draft=float(request.form.get('draft', 0) or 0),
+            engine_power=float(request.form.get('engine_power', 0) or 0),
+            fuel_type=request.form.get('fuel_type', '')
+        )
+        db.session.add(new_ship)
+        db.session.commit()
+        flash('Корабът е добавен успешно!', 'success')
+        return redirect(url_for('index'))
+    return render_template('add_ship.html')
 
 @app.route('/permits')
 @login_required
@@ -166,6 +188,50 @@ def add_inspection():
     ships = Ship.query.all()
     return render_template('add_inspection.html', ships=ships)
 
+
+@app.route('/tickets')
+@login_required
+def tickets():
+    all_tickets = Ticket.query.order_by(Ticket.issue_date.desc()).all()
+    return render_template('tickets.html', tickets=all_tickets)
+
+
+@app.route('/ticket/add', methods=['GET', 'POST'])
+@login_required
+def add_ticket():
+    if request.method == 'POST':
+        ticket_type = request.form['ticket_type']
+        validity_period = request.form['validity_period']
+
+        base_price = 0
+        if validity_period == 'Седмичен':
+            base_price = 10.0
+        elif validity_period == 'Месечен':
+            base_price = 25.0
+        elif validity_period == 'Годишен':
+            base_price = 100.0
+
+        final_price = base_price
+        if ticket_type == 'Инвалид' or ticket_type == 'Под 14г.':
+            final_price = 0.0  # Безплатно
+        elif ticket_type == 'Пенсионер':
+            final_price = base_price / 2  # 50% намаление
+
+        new_ticket = Ticket(
+            holder_name=request.form['holder_name'],
+            egn=request.form['egn'],
+            ticket_type=ticket_type,
+            validity_period=validity_period,
+            issue_date=datetime.strptime(request.form['issue_date'], '%Y-%m-%d').date(),
+            price=final_price,
+            telk_number=request.form.get('telk_number', '')
+        )
+        db.session.add(new_ticket)
+        db.session.commit()
+        flash('Билетът е издаден успешно!', 'success')
+        return redirect(url_for('tickets'))
+
+    return render_template('add_ticket.html')
 
 if __name__ == '__main__':
     with app.app_context():

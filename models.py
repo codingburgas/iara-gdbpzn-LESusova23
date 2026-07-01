@@ -53,3 +53,19 @@ class Inspection(db.Model):
     result = db.Column(db.String(200), nullable=False)
     violations = db.Column(db.Text)
     ship_id = db.Column(db.Integer, db.ForeignKey('ships.id'), nullable=False)
+
+
+class Ticket(db.Model):
+    __tablename__ = 'tickets'
+
+    id = db.Column(db.Integer, primary_key=True)
+    holder_name = db.Column(db.String(150), nullable=False)
+    egn = db.Column(db.String(10), nullable=False)
+    ticket_type = db.Column(db.String(50), nullable=False)
+    validity_period = db.Column(db.String(50), nullable=False)
+    issue_date = db.Column(db.Date, nullable=False)
+    price = db.Column(db.Float, nullable=False, default=0.0)
+    telk_number = db.Column(db.String(50))
+
+    def __repr__(self):
+        return f'<Ticket {self.holder_name} - {self.ticket_type}>'
