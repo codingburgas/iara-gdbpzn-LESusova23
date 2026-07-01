@@ -29,7 +29,9 @@
                     <td>{{ permit.gear_type }}</td>
                     <td>
                         {% if permit.is_active %}
-                            <span class="badge bg-success">Активно</span>
+                            <span class="badge bg-success mb-1">Активно</span>
+                            <br>
+                            <a href="/permit/revoke/{{ permit.id }}" class="btn btn-sm btn-outline-danger mt-1" onclick="return confirm('Сигурни ли сте, че искате да отнемете това разрешително?');">Отнеми</a>
                         {% else %}
                             <span class="badge bg-danger">Отнето</span>
                         {% endif %}

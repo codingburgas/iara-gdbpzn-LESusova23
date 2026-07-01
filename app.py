@@ -130,6 +130,20 @@ def add_permit():
     ships = Ship.query.all()
     return render_template('add_permit.html', ships=ships)
 
+
+@app.route('/permit/revoke/<int:permit_id>')
+@login_required
+def revoke_permit(permit_id):
+    # Находим разрешение по ID
+    permit = Permit.query.get_or_404(permit_id)
+
+    # Меняем статус на неактивный
+    permit.is_active = False
+    db.session.commit()
+
+    flash(f'Разрешителното {permit.permit_number} е отнето успешно!', 'warning')
+    return redirect(url_for('permits'))
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
