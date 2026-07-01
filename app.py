@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for, flash
-from flask_login import LoginManager, login_user, logout_user, login_required
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
 from models import db, User, Ship, Permit, CatchLog, Inspection, Ticket, Fine
@@ -15,21 +15,16 @@ login_manager.init_app(app)
 login_manager.login_view = 'login'
 login_manager.login_message = ""
 
-
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
 
-
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        # Хешируем пароль для безопасности
         hashed_password = generate_password_hash(request.form['password'], method='pbkdf2:sha256')
-        # Создаем нового пользователя
         new_user = User(username=request.form['username'], password=hashed_password)
 
-        # Проверяем, нет ли уже такого пользователя
         existing_user = User.query.filter_by(username=request.form['username']).first()
         if existing_user:
             flash('Това потребителско име вече е заето!', 'danger')
@@ -39,11 +34,7 @@ def register():
         db.session.commit()
         flash('Успешна регистрация! Сега можете да влезете.', 'success')
         return redirect(url_for('login'))
-
     return render_template('register.html')
-
-
-
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -51,16 +42,15 @@ def login():
         user = User.query.filter_by(username=request.form['username']).first()
         if user and check_password_hash(user.password, request.form['password']):
             login_user(user)
-            return redirect(url_for('index'))
+            next_page = request.args.get('next')
+            return redirect(next_page or url_for('dashboard'))
         flash('Невалидни данни!', 'danger')
     return render_template('login.html')
-
 
 @app.route('/logout')
 def logout():
     logout_user()
     return redirect(url_for('login'))
-
 
 @app.route('/')
 @login_required
@@ -109,7 +99,6 @@ def permits():
     all_permits = Permit.query.all()
     return render_template('permits.html', permits=all_permits)
 
-
 @app.route('/permit/add', methods=['GET', 'POST'])
 @login_required
 def add_permit():
@@ -128,7 +117,6 @@ def add_permit():
     ships = Ship.query.all()
     return render_template('add_permit.html', ships=ships)
 
-
 @app.route('/permit/revoke/<int:permit_id>')
 @login_required
 def revoke_permit(permit_id):
@@ -138,13 +126,11 @@ def revoke_permit(permit_id):
     flash(f'Разрешителното {permit.permit_number} е отнето успешно!', 'warning')
     return redirect(url_for('permits'))
 
-
 @app.route('/catch_logs')
 @login_required
 def catch_logs():
     logs = CatchLog.query.order_by(CatchLog.date.desc()).all()
     return render_template('catch_logs.html', logs=logs)
-
 
 @app.route('/catch_log/add', methods=['GET', 'POST'])
 @login_required
@@ -163,7 +149,6 @@ def add_catch_log():
     ships = Ship.query.all()
     return render_template('add_catch_log.html', ships=ships)
 
-
 @app.route('/catch_log/delete/<int:log_id>')
 @login_required
 def delete_catch_log(log_id):
@@ -173,13 +158,11 @@ def delete_catch_log(log_id):
     flash('Записът за улова е изтрит!', 'info')
     return redirect(url_for('catch_logs'))
 
-
 @app.route('/inspections')
 @login_required
 def inspections():
     all_inspections = Inspection.query.order_by(Inspection.date.desc()).all()
     return render_template('inspections.html', inspections=all_inspections)
-
 
 @app.route('/inspection/add', methods=['GET', 'POST'])
 @login_required
@@ -199,13 +182,29 @@ def add_inspection():
     ships = Ship.query.all()
     return render_template('add_inspection.html', ships=ships)
 
+@app.route('/fine/add/<int:inspection_id>', methods=['GET', 'POST'])
+@login_required
+def add_fine(inspection_id):
+    inspection = Inspection.query.get_or_404(inspection_id)
+    if request.method == 'POST':
+        new_fine = Fine(
+            inspection_id=inspection.id,
+            act_number=request.form['act_number'],
+            amount=float(request.form['amount']),
+            description=request.form['description'],
+            date=datetime.strptime(request.form['date'], '%Y-%m-%d').date()
+        )
+        db.session.add(new_fine)
+        db.session.commit()
+        flash('Актът и глобата са записани успешно!', 'success')
+        return redirect(url_for('inspections'))
+    return render_template('add_fine.html', inspection=inspection)
 
 @app.route('/tickets')
 @login_required
 def tickets():
     all_tickets = Ticket.query.order_by(Ticket.issue_date.desc()).all()
     return render_template('tickets.html', tickets=all_tickets)
-
 
 @app.route('/ticket/add', methods=['GET', 'POST'])
 @login_required
@@ -224,9 +223,9 @@ def add_ticket():
 
         final_price = base_price
         if ticket_type == 'Инвалид' or ticket_type == 'Под 14г.':
-            final_price = 0.0  # Безплатно
+            final_price = 0.0
         elif ticket_type == 'Пенсионер':
-            final_price = base_price / 2  # 50% намаление
+            final_price = base_price / 2
 
         new_ticket = Ticket(
             holder_name=request.form['holder_name'],
@@ -241,26 +240,7 @@ def add_ticket():
         db.session.commit()
         flash('Билетът е издаден успешно!', 'success')
         return redirect(url_for('tickets'))
-
     return render_template('add_ticket.html')
-
-@app.route('/fine/add/<int:inspection_id>', methods=['GET', 'POST'])
-@login_required
-def add_fine(inspection_id):
-    inspection = Inspection.query.get_or_404(inspection_id)
-    if request.method == 'POST':
-        new_fine = Fine(
-            inspection_id=inspection.id,
-            act_number=request.form['act_number'],
-            amount=float(request.form['amount']),
-            description=request.form['description'],
-            date=datetime.strptime(request.form['date'], '%Y-%m-%d').date()
-        )
-        db.session.add(new_fine)
-        db.session.commit()
-        flash('Актът и глобата са записани успешно!', 'success')
-        return redirect(url_for('inspections'))
-    return render_template('add_fine.html', inspection=inspection)
 
 if __name__ == '__main__':
     with app.app_context():
