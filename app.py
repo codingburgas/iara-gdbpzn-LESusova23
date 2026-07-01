@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, redirect, url_for, flash
 from flask_login import LoginManager, login_user, logout_user, login_required
 from werkzeug.security import check_password_hash, generate_password_hash
 from datetime import datetime
-from models import db, User, Ship, Permit, CatchLog, Inspection, Ticket
+from models import db, User, Ship, Permit, CatchLog, Inspection, Ticket, Fine
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your-secret-key-here'
@@ -232,6 +232,24 @@ def add_ticket():
         return redirect(url_for('tickets'))
 
     return render_template('add_ticket.html')
+
+@app.route('/fine/add/<int:inspection_id>', methods=['GET', 'POST'])
+@login_required
+def add_fine(inspection_id):
+    inspection = Inspection.query.get_or_404(inspection_id)
+    if request.method == 'POST':
+        new_fine = Fine(
+            inspection_id=inspection.id,
+            act_number=request.form['act_number'],
+            amount=float(request.form['amount']),
+            description=request.form['description'],
+            date=datetime.strptime(request.form['date'], '%Y-%m-%d').date()
+        )
+        db.session.add(new_fine)
+        db.session.commit()
+        flash('Актът и глобата са записани успешно!', 'success')
+        return redirect(url_for('inspections'))
+    return render_template('add_fine.html', inspection=inspection)
 
 if __name__ == '__main__':
     with app.app_context():

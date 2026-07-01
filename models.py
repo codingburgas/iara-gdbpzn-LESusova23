@@ -53,6 +53,7 @@ class Inspection(db.Model):
     result = db.Column(db.String(200), nullable=False)
     violations = db.Column(db.Text)
     ship_id = db.Column(db.Integer, db.ForeignKey('ships.id'), nullable=False)
+    fines = db.relationship('Fine', backref='inspection', lazy=True)
 
 
 class Ticket(db.Model):
@@ -69,3 +70,17 @@ class Ticket(db.Model):
 
     def __repr__(self):
         return f'<Ticket {self.holder_name} - {self.ticket_type}>'
+
+
+class Fine(db.Model):
+    __tablename__ = 'fines'
+
+    id = db.Column(db.Integer, primary_key=True)
+    inspection_id = db.Column(db.Integer, db.ForeignKey('inspections.id'), nullable=False)
+    act_number = db.Column(db.String(50), nullable=False)
+    amount = db.Column(db.Float, nullable=False)
+    description = db.Column(db.Text, nullable=False)
+    date = db.Column(db.Date, nullable=False)
+
+    def __repr__(self):
+        return f'<Fine {self.act_number}>'

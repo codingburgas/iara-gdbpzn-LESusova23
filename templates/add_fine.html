@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-4">
+    <div class="card shadow-sm p-4">
+        <h2 class="mb-4 text-danger">Съставяне на акт за инспекция #{{ inspection.id }}</h2>
+        <form method="POST">
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Номер на акта *</label>
+                    <label>
+                        <input type="text" name="act_number" class="form-control" required>
+                    </label>
+                </div>
+                <div class="col-md-6 mb-3">
+                    <label class="form-label">Сума на глобата (лв.) *</label>
+                    <label>
+                        <input type="number" step="0.01" name="amount" class="form-control" required>
+                    </label>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Дата на съставяне *</label>
+                <label>
+                    <input type="date" name="date" class="form-control" required>
+                </label>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Описание на нарушението *</label>
+                <label>
+                    <textarea name="description" class="form-control" rows="3" required></textarea>
+                </label>
+            </div>
+            <div class="d-flex justify-content-end">
+                <a href="/inspections" class="btn btn-secondary me-2">Отказ</a>
+                <button type="submit" class="btn btn-danger px-4">Запиши акта</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
