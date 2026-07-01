@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid mt-4">
+    <h2 class="mb-4">Добре дошли, {{ current_user.username }}!</h2>
+    <p class="text-muted">Системен панел за управление на ИАРА</p>
+
+    <div class="row mt-4">
+        <div class="col-md-3">
+            <div class="card text-white bg-primary mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Кораби</h5>
+                    <h2 class="display-4">{{ stats.ships }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-warning mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Инспекции</h5>
+                    <h2 class="display-4">{{ stats.inspections }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-success mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Билети</h5>
+                    <h2 class="display-4">{{ stats.tickets }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-white bg-danger mb-3 shadow">
+                <div class="card-body">
+                    <h5 class="card-title">Глоби (Актове)</h5>
+                    <h2 class="display-4">{{ stats.fines }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

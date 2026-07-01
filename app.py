@@ -68,6 +68,17 @@ def index():
     ships = Ship.query.all()
     return render_template('index.html', ships=ships)
 
+@app.route('/dashboard')
+@login_required
+def dashboard():
+    stats = {
+        'ships': Ship.query.count(),
+        'inspections': Inspection.query.count(),
+        'tickets': Ticket.query.count(),
+        'fines': Fine.query.count()
+    }
+    return render_template('dashboard.html', stats=stats)
+
 @app.route('/ship/add', methods=['GET', 'POST'])
 @login_required
 def add_ship():
