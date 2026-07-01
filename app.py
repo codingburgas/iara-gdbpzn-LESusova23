@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for
-from models import db, Ship
+from models import db, Ship, User
+from flask_login import LoginManager, login_user, login_required, logout_user, current_user
+from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 
@@ -7,6 +9,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///iara.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db.init_app(app)
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login' # Куда отправлять, если пользователь не вошел
+
+@login_manager.user_loader
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 @app.route('/')
 def index():
@@ -25,13 +35,12 @@ def add_ship():
             owner_name=request.form['owner_name'],
             captain_name=request.form['captain_name']
         )
-        # Сохраняем в базу данных
+
         db.session.add(new_ship)
         db.session.commit()
-        # Возвращаемся на главную
+
         return redirect(url_for('index'))
 
-    # Если это просто переход по ссылке (GET) - показываем форму
     return render_template('add_ship.html')
 
 if __name__ == '__main__':
