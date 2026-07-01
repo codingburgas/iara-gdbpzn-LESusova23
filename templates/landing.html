@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4">Добре дошли в Система ИАРА</h1>
+        <p class="lead">Моля, изберете как да продължите:</p>
+    </div>
+
+    <div class="row justify-content-center g-4">
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-primary">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Вече имате акаунт?</h5>
+                    <p class="card-text">Влезте, за да управлявате вашите кораби.</p>
+                    <a href="/login" class="btn btn-primary btn-lg w-100">Вход</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-success">
+                <div class="card-body text-center">
+                    <h5 class="card-title">Нов потребител?</h5>
+                    <p class="card-text">Регистрирайте се, за да получите достъп.</p>
+                    <a href="/register" class="btn btn-success btn-lg w-100">Регистрация</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

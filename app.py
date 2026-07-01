@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, flash
 from models import db, Ship, User
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -20,12 +20,14 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 @app.route('/')
-@login_required
 def index():
-
-    ships = Ship.query.all()
-    return render_template('index.html', ships=ships)
-
+    if current_user.is_authenticated:
+        # Если пользователь вошел - показываем список кораблей
+        ships = Ship.query.all()
+        return render_template('index.html', ships=ships)
+    else:
+        # Если не вошел - показываем лендинг с кнопками
+        return render_template('landing.html')
 
 @app.route('/ship/add', methods=['GET', 'POST'])
 @login_required
@@ -56,13 +58,29 @@ def register():
         return redirect(url_for('login'))
     return render_template('register.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
-        user = User.query.filter_by(username=request.form['username']).first()
-        if user and check_password_hash(user.password, request.form['password']):
+        username = request.form['username']
+        password = request.form['password']
+        user = User.query.filter_by(username=username).first()
+
+        print(f"DEBUG: Попытка входа для пользователя: {username}")
+
+        if user:
+            print(f"DEBUG: Пользователь найден в базе: {user.username}")
+            password_matches = check_password_hash(user.password, password)
+            print(f"DEBUG: Пароль совпал? {password_matches}")
+        else:
+            print(f"DEBUG: Пользователь с именем {username} не найден!")
+
+        if user and check_password_hash(user.password, password):
             login_user(user)
             return redirect(url_for('index'))
+        else:
+            flash('Неправилно потребителско име или парола!', 'danger')
+
     return render_template('login.html')
 
 @app.route('/logout')
