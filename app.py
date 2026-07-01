@@ -26,9 +26,10 @@ def index():
 
 
 @app.route('/ship/add', methods=['GET', 'POST'])
+@login_required
 def add_ship():
     if request.method == 'POST':
-        # Получаем данные из формы
+
         new_ship = Ship(
             name=request.form['name'],
             int_number=request.form['int_number'],
@@ -42,6 +43,31 @@ def add_ship():
         return redirect(url_for('index'))
 
     return render_template('add_ship.html')
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        hashed_pw = generate_password_hash(request.form['password'], method='pbkdf2:sha256')
+        new_user = User(username=request.form['username'], password=hashed_pw)
+        db.session.add(new_user)
+        db.session.commit()
+        return redirect(url_for('login'))
+    return render_template('register.html')
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        user = User.query.filter_by(username=request.form['username']).first()
+        if user and check_password_hash(user.password, request.form['password']):
+            login_user(user)
+            return redirect(url_for('index'))
+    return render_template('login.html')
+
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('index'))
 
 if __name__ == '__main__':
     with app.app_context():

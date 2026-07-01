@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Регистрация</h2>
+    <form method="POST">
+        <div class="mb-3">
+            <label>Потребителско име</label>
+            <label>
+                <input type="text" name="username" class="form-control" required>
+            </label>
+        </div>
+        <div class="mb-3">
+            <label>Парола</label>
+            <label>
+                <input type="password" name="password" class="form-control" required>
+            </label>
+        </div>
+        <button type="submit" class="btn btn-primary">Регистрация</button>
+    </form>
+</div>
+{% endblock %}
