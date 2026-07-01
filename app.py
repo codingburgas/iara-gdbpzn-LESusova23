@@ -21,7 +21,6 @@ def load_user(user_id):
     return User.query.get(int(user_id))
 
 
-# --- НОВИЙ МАРШРУТ ЗА РЕГИСТРАЦИЯ ---
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -44,7 +43,7 @@ def register():
     return render_template('register.html')
 
 
-# -------------------------------------
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -69,6 +68,29 @@ def index():
     ships = Ship.query.all()
     return render_template('index.html', ships=ships)
 
+@app.route('/ship/add', methods=['GET', 'POST'])
+@login_required
+def add_ship():
+    if request.method == 'POST':
+        new_ship = Ship(
+            name=request.form['name'],
+            int_number=request.form['int_number'],
+            call_sign=request.form.get('call_sign', ''),
+            marking=request.form.get('marking', ''),
+            owner_name=request.form['owner_name'],
+            captain_name=request.form['captain_name'],
+            length=float(request.form.get('length', 0) or 0),
+            width=float(request.form.get('width', 0) or 0),
+            tonnage=float(request.form.get('tonnage', 0) or 0),
+            draft=float(request.form.get('draft', 0) or 0),
+            engine_power=float(request.form.get('engine_power', 0) or 0),
+            fuel_type=request.form.get('fuel_type', '')
+        )
+        db.session.add(new_ship)
+        db.session.commit()
+        flash('Корабът е добавен успешно!', 'success')
+        return redirect(url_for('index'))
+    return render_template('add_ship.html')
 
 @app.route('/permits')
 @login_required
