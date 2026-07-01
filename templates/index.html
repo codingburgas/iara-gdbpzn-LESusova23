@@ -1,0 +1,39 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2>Регистър на риболовните кораби</h2>
+    <a href="#" class="btn btn-success">+ Добави кораб</a>
+</div>
+
+<div class="card shadow-sm">
+    <div class="card-body">
+        <table class="table table-hover mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th>Име на кораба</th>
+                    <th>Межд. номер</th>
+                    <th>Собственик</th>
+                    <th>Капитан</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ship in ships %}
+                <tr>
+                    <td>{{ ship.name }}</td>
+                    <td>{{ ship.int_number }}</td>
+                    <td>{{ ship.owner_name }}</td>
+                    <td>{{ ship.captain_name }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="4" class="text-center text-muted py-4">
+                        Няма регистрирани кораби в системата.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}
