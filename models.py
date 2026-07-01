@@ -25,7 +25,10 @@ class Ship(db.Model):
     engine_power = db.Column(db.Float)
     fuel_type = db.Column(db.String(50))
 
+    # Связи
     permits = db.relationship('Permit', backref='ship', lazy=True, cascade="all, delete-orphan")
+    # НОВОЕ: Связь с электронным дневником (уловами)
+    catch_logs = db.relationship('CatchLog', backref='ship', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Ship {self.name} - {self.int_number}>'
@@ -45,6 +48,19 @@ class Permit(db.Model):
 
     def __repr__(self):
         return f'<Permit {self.permit_number}>'
+
+class CatchLog(db.Model):
+    __tablename__ = 'catch_logs'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    fish_species = db.Column(db.String(100), nullable=False)
+    quantity_kg = db.Column(db.Float, nullable=False)
+
+    ship_id = db.Column(db.Integer, db.ForeignKey('ships.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<CatchLog {self.fish_species} - {self.quantity_kg}kg>'
 
 
 class User(db.Model, UserMixin):

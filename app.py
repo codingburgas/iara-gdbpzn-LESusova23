@@ -1,3 +1,4 @@
+from models import db, Ship, User, Permit, CatchLog
 from flask import Flask, render_template, request, redirect, url_for, flash
 from models import db, Ship, User, Permit  # Добавили Permit
 from flask_login import LoginManager, login_user, login_required, logout_user, current_user
@@ -143,6 +144,34 @@ def revoke_permit(permit_id):
 
     flash(f'Разрешителното {permit.permit_number} е отнето успешно!', 'warning')
     return redirect(url_for('permits'))
+
+
+@app.route('/catch_logs')
+@login_required
+def catch_logs():
+    logs = CatchLog.query.order_by(CatchLog.date.desc()).all()
+    return render_template('catch_logs.html', logs=logs)
+
+
+@app.route('/catch_log/add', methods=['GET', 'POST'])
+@login_required
+def add_catch_log():
+    if request.method == 'POST':
+        log_date = datetime.strptime(request.form['date'], '%Y-%m-%d').date()
+
+        new_log = CatchLog(
+            date=log_date,
+            fish_species=request.form['fish_species'],
+            quantity_kg=float(request.form['quantity_kg']),
+            ship_id=request.form['ship_id']
+        )
+        db.session.add(new_log)
+        db.session.commit()
+        flash('Уловът е записан успешно!', 'success')
+        return redirect(url_for('catch_logs'))
+
+    ships = Ship.query.all()
+    return render_template('add_catch_log.html', ships=ships)
 
 if __name__ == '__main__':
     with app.app_context():
