@@ -4,6 +4,7 @@ from flask_login import LoginManager, login_user, login_required, logout_user, c
 from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = 'vash-super-secret-key-123'
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///iara.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
