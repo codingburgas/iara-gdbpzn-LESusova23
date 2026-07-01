@@ -1,20 +1,28 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Регистър на риболовните кораби</h2>
-    <a href="/ship/add" class="btn btn-success">+ Добави кораб</a>
-</div>
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2>Регистър на риболовните кораби</h2>
+        <a href="/ship/add" class="btn btn-success">+ Добави кораб</a>
+    </div>
 
-<div class="card shadow-sm">
-    <div class="card-body">
-        <table class="table table-hover mb-0">
+    <div class="table-responsive">
+        <table class="table table-striped table-hover shadow-sm">
             <thead class="table-dark">
                 <tr>
-                    <th>Име на кораба</th>
-                    <th>Межд. номер</th>
+                    <th>Име</th>
+                    <th>Междун. номер</th>
+                    <th>Позивен</th>
+                    <th>Маркировка</th>
                     <th>Собственик</th>
                     <th>Капитан</th>
+                    <th>Дължина (м)</th>
+                    <th>Ширина (м)</th>
+                    <th>Тонаж</th>
+                    <th>Газене (м)</th>
+                    <th>Мощност (кВт)</th>
+                    <th>Гориво</th>
                 </tr>
             </thead>
             <tbody>
@@ -22,14 +30,16 @@
                 <tr>
                     <td>{{ ship.name }}</td>
                     <td>{{ ship.int_number }}</td>
+                    <td>{{ ship.call_sign }}</td>
+                    <td>{{ ship.marking }}</td>
                     <td>{{ ship.owner_name }}</td>
                     <td>{{ ship.captain_name }}</td>
-                </tr>
-                {% else %}
-                <tr>
-                    <td colspan="4" class="text-center text-muted py-4">
-                        Няма регистрирани кораби в системата.
-                    </td>
+                    <td>{{ ship.length }}</td>
+                    <td>{{ ship.width }}</td>
+                    <td>{{ ship.tonnage }}</td>
+                    <td>{{ ship.draft }}</td>
+                    <td>{{ ship.engine_power }}</td>
+                    <td>{{ ship.fuel_type }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
