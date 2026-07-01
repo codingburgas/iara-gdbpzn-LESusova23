@@ -1,22 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Издадени билети за любителски риболов</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">Любителски билети</h2>
         <a href="/ticket/add" class="btn btn-primary">+ Издай нов билет</a>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-hover shadow-sm">
-            <thead class="table-dark">
+    <div class="table-responsive card p-3">
+        <table class="table table-hover align-middle">
+            <thead>
                 <tr>
-                    <th>Име на риболовеца</th>
-                    <th>ЕГН</th>
-                    <th>Тип билет</th>
-                    <th>Валидност</th>
-                    <th>Дата на издаване</th>
-                    <th>Цена (лв.)</th>
-                    <th>ТЕЛК Решение</th>
+                    <th>Име</th><th>ЕГН</th><th>Тип</th><th>Валидност</th><th>Дата</th><th>Цена</th><th>ТЕЛК</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,18 +19,14 @@
                     <td>{{ ticket.holder_name }}</td>
                     <td>{{ ticket.egn }}</td>
                     <td>
-                        {% if ticket.ticket_type == 'Стандартен' %}
-                            <span class="badge bg-secondary">{{ ticket.ticket_type }}</span>
-                        {% elif ticket.ticket_type == 'Инвалид' %}
-                            <span class="badge bg-info text-dark">{{ ticket.ticket_type }}</span>
-                        {% else %}
-                            <span class="badge bg-success">{{ ticket.ticket_type }}</span>
-                        {% endif %}
+                        <span class="badge {% if ticket.ticket_type == 'Стандартен' %}bg-secondary{% else %}bg-info{% endif %}">
+                            {{ ticket.ticket_type }}
+                        </span>
                     </td>
                     <td>{{ ticket.validity_period }}</td>
                     <td>{{ ticket.issue_date.strftime('%d.%m.%Y') }}</td>
-                    <td><strong class="text-success">{{ ticket.price }} лв.</strong></td>
-                    <td>{{ ticket.telk_number if ticket.telk_number else '-' }}</td>
+                    <td><strong class="text-info">{{ ticket.price }} лв.</strong></td>
+                    <td>{{ ticket.telk_number or '-' }}</td>
                 </tr>
                 {% endfor %}
             </tbody>

@@ -1,28 +1,18 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Регистър на риболовните кораби</h2>
-        <a href="/ship/add" class="btn btn-success">+ Добави кораб</a>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">Регистър на риболовните кораби</h2>
+        <a href="/ship/add" class="btn btn-primary">+ Добави кораб</a>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-hover shadow-sm">
-            <thead class="table-dark">
+    <div class="table-responsive card p-3">
+        <table class="table table-hover align-middle">
+            <thead>
                 <tr>
-                    <th>Име</th>
-                    <th>Междун. номер</th>
-                    <th>Позивен</th>
-                    <th>Маркировка</th>
-                    <th>Собственик</th>
-                    <th>Капитан</th>
-                    <th>Дължина</th>
-                    <th>Ширина</th>
-                    <th>Тонаж</th>
-                    <th>Газене</th>
-                    <th>Двигател</th>
-                    <th>Гориво</th>
+                    <th>Име</th><th>Междун. номер</th><th>Позивен</th><th>Маркировка</th>
+                    <th>Собственик</th><th>Капитан</th><th>Дължина</th><th>Ширина</th>
+                    <th>Тонаж</th><th>Газене</th><th>Двигател</th><th>Гориво</th>
                 </tr>
             </thead>
             <tbody>
@@ -46,5 +36,4 @@
         </table>
     </div>
 </div>
-
 {% endblock %}

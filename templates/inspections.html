@@ -1,21 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container-fluid mt-4">
-    <div class="d-flex justify-content-between align-items-center mb-3">
-        <h2>Регистър на инспекциите</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-white">Регистър на инспекциите</h2>
         <a href="/inspection/add" class="btn btn-warning">+ Добави инспекция</a>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-striped table-hover shadow-sm">
-            <thead class="table-dark">
+    <div class="table-responsive card p-3">
+        <table class="table table-hover align-middle">
+            <thead>
                 <tr>
-                    <th>Дата</th>
-                    <th>Кораб</th>
-                    <th>Място</th>
-                    <th>Резултат</th>
-                    <th>Нарушения</th>
-                    <th>Действия</th>
+                    <th>Дата</th><th>Кораб</th><th>Място</th><th>Резултат</th><th>Нарушения</th><th>Действия</th>
                 </tr>
             </thead>
             <tbody>
@@ -28,9 +23,9 @@
                     <td>{{ insp.violations or 'Няма' }}</td>
                     <td>
                         {% if not insp.fines %}
-                            <a href="/fine/add/{{ insp.id }}" class="btn btn-sm btn-danger">Наложи глоба</a>
+                            <a href="/fine/add/{{ insp.id }}" class="btn btn-danger btn-sm">Наложи глоба</a>
                         {% else %}
-                            <span class="text-danger small fw-bold">Акт: {{ insp.fines[0].amount }} лв.</span>
+                            <span class="text-warning fw-bold small">Акт: {{ insp.fines[0].amount }} лв.</span>
                         {% endif %}
                     </td>
                 </tr>

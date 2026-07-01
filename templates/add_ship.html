@@ -1,82 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mt-4">
-    <div class="card shadow-sm p-4">
-        <h2 class="mb-4">Добавяне на нов риболовен кораб</h2>
+    <div class="card p-4 shadow-lg">
+        <h2 class="mb-4 text-white">Добавяне на нов риболовен кораб</h2>
         <form method="POST">
-
             <div class="row">
                 <div class="col-md-6 mb-3">
-                    <label class="form-label text-muted">Име на кораба *</label>
+                    <label class="form-label text-white">Име на кораба *</label>
                     <input type="text" name="name" class="form-control" required>
                 </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label text-muted">Международен номер *</label>
-                    <input type="text" name="int_number" class="form-control" required>
                 </div>
-            </div>
 
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label text-muted">Позивен сигнал</label>
-                    <input type="text" name="call_sign" class="form-control">
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label text-muted">Външна маркировка</label>
-                    <input type="text" name="marking" class="form-control">
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label text-muted">Име на собственика *</label>
-                    <input type="text" name="owner_name" class="form-control" required>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <label class="form-label text-muted">Име на капитана *</label>
-                    <input type="text" name="captain_name" class="form-control" required>
-                </div>
-            </div>
-
-            <h5 class="mt-4 mb-3 text-secondary">Технически характеристики</h5>
-
-            <div class="row">
-                <div class="col-md-2 mb-3">
-                    <label class="form-label text-muted">Дължина (м)</label>
-                    <input type="number" step="0.01" name="length" class="form-control">
-                </div>
-                <div class="col-md-2 mb-3">
-                    <label class="form-label text-muted">Ширина (м)</label>
-                    <input type="number" step="0.01" name="width" class="form-control">
-                </div>
-                <div class="col-md-2 mb-3">
-                    <label class="form-label text-muted">Бруто тонаж</label>
-                    <input type="number" step="0.01" name="tonnage" class="form-control">
-                </div>
-                <div class="col-md-2 mb-3">
-                    <label class="form-label text-muted">Газене (м)</label>
-                    <input type="number" step="0.01" name="draft" class="form-control">
-                </div>
-                <div class="col-md-2 mb-3">
-                    <label class="form-label text-muted">Двигател (kW)</label>
-                    <input type="number" step="0.01" name="engine_power" class="form-control">
-                </div>
-                <div class="col-md-2 mb-3">
-                    <label class="form-label text-muted">Вид гориво</label>
-                    <select name="fuel_type" class="form-select">
-                        <option value="Дизел">Дизел</option>
-                        <option value="Бензин">Бензин</option>
-                        <option value="Електрически">Електрически</option>
-                        <option value="Друго">Друго</option>
-                    </select>
-                </div>
-            </div>
-
-            <hr class="my-4">
-
-            <div class="d-flex justify-content-end">
+            <div class="d-flex justify-content-end mt-4">
                 <a href="/" class="btn btn-secondary me-2">Отказ</a>
-                <button type="submit" class="btn btn-success px-4">Запиши кораба</button>
+                <button type="submit" class="btn btn-primary px-4">Запиши кораба</button>
             </div>
         </form>
     </div>
