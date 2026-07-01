@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between mb-3">
+        <h2>Регистър на инспекциите</h2>
+        <a href="/inspection/add" class="btn btn-warning">+ Добави инспекция</a>
+    </div>
+    <table class="table table-striped shadow-sm">
+        <thead class="table-dark">
+            <tr><th>Дата</th><th>Кораб</th><th>Място</th><th>Резултат</th><th>Нарушения</th></tr>
+        </thead>
+        <tbody>
+            {% for insp in inspections %}
+            <tr>
+                <td>{{ insp.date.strftime('%d.%m.%Y') }}</td>
+                <td>{{ insp.ship.name }}</td>
+                <td>{{ insp.location }}</td>
+                <td>{{ insp.result }}</td>
+                <td>{{ insp.violations or 'Няма' }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card shadow-sm p-4">
+    <h4>Нова инспекция</h4>
+    <form method="POST">
+        <div class="mb-3">
+            <label>Кораб</label>
+            <select name="ship_id" class="form-select" required>
+                {% for ship in ships %}<option value="{{ ship.id }}">{{ ship.name }}</option>{% endfor %}
+            </select>
+        </div>
+        <div class="mb-3"><label>Дата</label><input type="date" name="date" class="form-control" required></div>
+        <div class="mb-3"><label>Място</label><input type="text" name="location" class="form-control" required></div>
+        <div class="mb-3"><label>Резултат</label><input type="text" name="result" class="form-control" required></div>
+        <div class="mb-3"><label>Нарушения</label><textarea name="violations" class="form-control"></textarea></div>
+        <button type="submit" class="btn btn-warning">Запази</button>
+    </form>
+</div>
+{% endblock %}

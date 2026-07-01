@@ -1,20 +1,44 @@
 {% extends 'base.html' %}
 {% block content %}
 <div class="container mt-5">
-    <h2>Регистрация</h2>
-    <form method="POST">
-        <div class="mb-3">
-            <label class="form-label">Потребителско име</label>
-            <input type="text" name="username" class="form-control" required>
-        </div>
-        <div class="mb-3">
-            <label class="form-label">Парола</label>
-            <input type="password" name="password" class="form-control" required>
+    <h2 class="text-center mb-5 text-muted">Добре дошли в Система ИАРА</h2>
+
+    <div class="row justify-content-center align-items-stretch">
+
+        <div class="col-md-5 mb-4">
+            <div class="card shadow p-4 h-100" style="border-top: 5px solid #198754; border-radius: 10px;">
+                <h3 class="text-center mb-4 fw-bold text-success">Вход</h3>
+                <form method="POST" action="/login">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Потребителско име</label>
+                        <input type="text" name="username" class="form-control form-control-lg" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted">Парола</label>
+                        <input type="password" name="password" class="form-control form-control-lg" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100 py-2 fw-bold fs-5 mt-auto">Влез в системата</button>
+                </form>
+            </div>
         </div>
 
-        <button type="submit" class="btn btn-primary w-100">Регистрация</button>
+        <div class="col-md-5 mb-4">
+            <div class="card shadow p-4 h-100" style="border-top: 5px solid #0d6efd; border-radius: 10px;">
+                <h3 class="text-center mb-4 fw-bold text-primary">Регистрация</h3>
+                <form method="POST" action="/register">
+                    <div class="mb-3">
+                        <label class="form-label text-muted">Потребителско име</label>
+                        <input type="text" name="username" class="form-control form-control-lg" required>
+                    </div>
+                    <div class="mb-4">
+                        <label class="form-label text-muted">Парола</label>
+                        <input type="password" name="password" class="form-control form-control-lg" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100 py-2 fw-bold fs-5 mt-auto">Създай акаунт</button>
+                </form>
+            </div>
+        </div>
 
-        <a href="/" class="btn btn-secondary w-100 mt-2">Назад</a>
-    </form>
+    </div>
 </div>
 {% endblock %}
