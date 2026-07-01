@@ -25,10 +25,10 @@ class Ship(db.Model):
     engine_power = db.Column(db.Float)
     fuel_type = db.Column(db.String(50))
 
-    # Связи
     permits = db.relationship('Permit', backref='ship', lazy=True, cascade="all, delete-orphan")
-    # НОВОЕ: Связь с электронным дневником (уловами)
     catch_logs = db.relationship('CatchLog', backref='ship', lazy=True, cascade="all, delete-orphan")
+
+    inspections = db.relationship('Inspection', backref='ship', lazy=True, cascade="all, delete-orphan")
 
     def __repr__(self):
         return f'<Ship {self.name} - {self.int_number}>'
@@ -67,3 +67,18 @@ class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
+
+
+class Inspection(db.Model):
+    __tablename__ = 'inspections'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    location = db.Column(db.String(100), nullable=False)
+    result = db.Column(db.String(200), nullable=False)
+    violations = db.Column(db.Text)
+
+    ship_id = db.Column(db.Integer, db.ForeignKey('ships.id'), nullable=False)
+
+    def __repr__(self):
+        return f'<Inspection {self.date} - {self.result}>'
