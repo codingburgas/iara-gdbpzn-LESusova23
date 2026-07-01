@@ -173,6 +173,15 @@ def add_catch_log():
     ships = Ship.query.all()
     return render_template('add_catch_log.html', ships=ships)
 
+@app.route('/catch_log/delete/<int:log_id>')
+@login_required
+def delete_catch_log(log_id):
+    log = CatchLog.query.get_or_404(log_id)
+    db.session.delete(log)
+    db.session.commit()
+    flash('Записът за улова е изтрит!', 'info')
+    return redirect(url_for('catch_logs'))
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

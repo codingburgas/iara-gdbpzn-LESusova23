@@ -23,7 +23,6 @@
 {% endif %}
 
 <div class="d-flex">
-
     {% if current_user.is_authenticated %}
         <nav class="sidebar p-3">
             <h4 class="mb-4 mt-2 px-2">Система ИАРА</h4>
@@ -51,11 +50,9 @@
                 <div class="alert alert-{{ category }}">{{ message }}</div>
               {% endfor %}{% endif %}
             {% endwith %}
-
             {% block content %}{% endblock %}
         </main>
     </div>
 </div>
-
 </body>
 </html>
