@@ -8,18 +8,22 @@
             <div class="row">
                 <div class="col-md-6 mb-3">
                     <label class="form-label text-muted">Трите имена *</label>
-                    <input type="text" name="holder_name" class="form-control" required>
+                    <label>
+                        <input type="text" name="holder_name" class="form-control" required>
+                    </label>
                 </div>
                 <div class="col-md-6 mb-3">
                     <label class="form-label text-muted">ЕГН *</label>
-                    <input type="text" name="egn" class="form-control" maxlength="10" required>
+                    <label>
+                        <input type="text" name="egn" class="form-control" maxlength="10" required>
+                    </label>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4 mb-3">
                     <label class="form-label text-muted">Тип на лицето *</label>
-                    <select name="ticket_type" id="ticket_type" class="form-select" onchange="checkTelk()" required>
+                    <label for="ticket_type"></label><select name="ticket_type" id="ticket_type" class="form-select" onchange="checkTelk()" required>
                         <option value="Стандартен">Стандартен (над 14г.)</option>
                         <option value="Под 14г.">Под 14г. (Безплатен)</option>
                         <option value="Пенсионер">Пенсионер (Намаление)</option>
@@ -29,23 +33,27 @@
 
                 <div class="col-md-4 mb-3">
                     <label class="form-label text-muted">Срок на валидност *</label>
-                    <select name="validity_period" class="form-select" required>
-                        <option value="Седмичен">Седмичен</option>
-                        <option value="Месечен">Месечен</option>
-                        <option value="Годишен">Годишен</option>
-                    </select>
+                    <label>
+                        <select name="validity_period" class="form-select" required>
+                            <option value="Седмичен">Седмичен</option>
+                            <option value="Месечен">Месечен</option>
+                            <option value="Годишен">Годишен</option>
+                        </select>
+                    </label>
                 </div>
 
                 <div class="col-md-4 mb-3">
                     <label class="form-label text-muted">Дата на издаване *</label>
-                    <input type="date" name="issue_date" class="form-control" required>
+                    <label>
+                        <input type="date" name="issue_date" class="form-control" required>
+                    </label>
                 </div>
             </div>
 
             <div class="row" id="telk_row" style="display: none;">
                 <div class="col-md-12 mb-3">
                     <label class="form-label text-info fw-bold">Номер на ТЕЛК решение *</label>
-                    <input type="text" name="telk_number" id="telk_number" class="form-control" placeholder="Въведете номер на решението...">
+                    <label for="telk_number"></label><input type="text" name="telk_number" id="telk_number" class="form-control" placeholder="Въведете номер на решението...">
                 </div>
             </div>
 
