@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <h4 class="mb-0">Издаване на ново разрешително</h4>
+            </div>
+            <div class="card-body">
+                <form method="POST">
+                    <div class="mb-3">
+                        <label class="form-label">Избор на кораб</label>
+                        <label>
+                            <select name="ship_id" class="form-select" required>
+                                <option value="">-- Изберете кораб --</option>
+                                {% for ship in ships %}
+                                    <option value="{{ ship.id }}">{{ ship.name }} (Рег. № {{ ship.int_number }})</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Номер на разрешителното</label>
+                        <label>
+                            <input type="text" name="permit_number" class="form-control" required placeholder="Напр. PER-2024-001">
+                        </label>
+                    </div>
+
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Дата на издаване</label>
+                            <label>
+                                <input type="date" name="issue_date" class="form-control" required>
+                            </label>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Валидно до</label>
+                            <label>
+                                <input type="date" name="expiry_date" class="form-control" required>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <label class="form-label">Разрешени риболовни уреди (Снасти)</label>
+                        <label>
+                            <input type="text" name="gear_type" class="form-control" placeholder="Напр. Мрежи, парагади...">
+                        </label>
+                    </div>
+
+                    <div class="d-flex justify-content-between">
+                        <a href="/permits" class="btn btn-secondary">Отказ</a>
+                        <button type="submit" class="btn btn-success">Издай разрешително</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

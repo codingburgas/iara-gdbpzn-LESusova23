@@ -2,42 +2,76 @@
 
 {% block content %}
 <div class="row justify-content-center">
-    <div class="col-md-8">
+    <div class="col-md-10">
         <div class="card shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h4 class="mb-0">Регистрация на нов риболовен кораб</h4>
             </div>
             <div class="card-body">
                 <form method="POST">
+                    <h5 class="text-primary border-bottom pb-2 mb-3">Обща информация</h5>
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label">Име на кораба</label>
-                            <label>
-                                <input type="text" name="name" class="form-content form-control" required>
-                            </label>
+                            <input type="text" name="name" class="form-control" required>
                         </div>
                         <div class="col-md-6">
                             <label class="form-label">Международен номер</label>
-                            <label>
-                                <input type="text" name="int_number" class="form-control" required>
-                            </label>
+                            <input type="text" name="int_number" class="form-control" required>
                         </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-md-6">
-                            <label class="form-label">Име на собственика</label>
-                            <label>
-                                <input type="text" name="owner_name" class="form-control" required>
-                            </label>
+                            <label class="form-label">Позивен (Call sign)</label>
+                            <input type="text" name="call_sign" class="form-control">
                         </div>
                         <div class="col-md-6">
-                            <label class="form-label">Име на капитана</label>
-                            <label>
-                                <input type="text" name="captain_name" class="form-control" required>
-                            </label>
+                            <label class="form-label">Маркировка</label>
+                            <input type="text" name="marking" class="form-control">
                         </div>
                     </div>
-                    <div class="d-flex justify-content-between">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Собственик</label>
+                            <input type="text" name="owner_name" class="form-control" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Капитан</label>
+                            <input type="text" name="captain_name" class="form-control" required>
+                        </div>
+                    </div>
+
+                    <h5 class="text-primary border-bottom pb-2 mb-3 mt-4">Технически характеристики</h5>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Дължина (м)</label>
+                            <input type="number" step="0.01" name="length" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Ширина (м)</label>
+                            <input type="number" step="0.01" name="width" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Тонаж</label>
+                            <input type="number" step="0.01" name="tonnage" class="form-control">
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-md-4">
+                            <label class="form-label">Газене (м)</label>
+                            <input type="number" step="0.01" name="draft" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Мощност на двигателя (кВт)</label>
+                            <input type="number" step="0.01" name="engine_power" class="form-control">
+                        </div>
+                        <div class="col-md-4">
+                            <label class="form-label">Тип гориво</label>
+                            <input type="text" name="fuel_type" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-between mt-4">
                         <a href="/" class="btn btn-secondary">Отказ</a>
                         <button type="submit" class="btn btn-success">Запази кораб</button>
                     </div>
